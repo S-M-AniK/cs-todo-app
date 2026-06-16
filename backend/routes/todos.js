@@ -10,19 +10,27 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  const { title } = req.body;
-  db.query('INSERT INTO todos (title) VALUES (?)', [title], (err, result) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json({ id: result.insertId, title, completed: false });
-  });
+  const { title, priority, due_date, category } = req.body;
+  db.query(
+    'INSERT INTO todos (title, priority, due_date, category) VALUES (?, ?, ?, ?)',
+    [title, priority || 'Medium', due_date || null, category || 'Study'],
+    (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ id: result.insertId, title, priority, due_date, category, completed: false });
+    }
+  );
 });
 
 router.put('/:id', (req, res) => {
-  const { completed } = req.body;
-  db.query('UPDATE todos SET completed = ? WHERE id = ?', [completed, req.params.id], (err) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json({ message: 'Updated!' });
-  });
+  const { completed, priority, due_date, category } = req.body;
+  db.query(
+    'UPDATE todos SET completed = ?, priority = ?, due_date = ?, category = ? WHERE id = ?',
+    [completed, priority, due_date, category, req.params.id],
+    (err) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ message: 'Updated!' });
+    }
+  );
 });
 
 router.delete('/:id', (req, res) => {

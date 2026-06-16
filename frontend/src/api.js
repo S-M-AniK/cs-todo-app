@@ -5,20 +5,20 @@ export const getTodos = async () => {
   return res.json();
 };
 
-export const addTodo = async (title) => {
+export const addTodo = async (title, priority, due_date, category) => {
   const res = await fetch(API_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ title }),
+    body: JSON.stringify({ title, priority, due_date, category }),
   });
   return res.json();
 };
 
-export const updateTodo = async (id, completed) => {
+export const updateTodo = async (id, completed, priority, due_date, category) => {
   const res = await fetch(`${API_URL}/${id}`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ completed }),
+    body: JSON.stringify({ completed, priority, due_date, category }),
   });
   return res.json();
 };
